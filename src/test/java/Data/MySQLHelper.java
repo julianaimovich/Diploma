@@ -1,8 +1,11 @@
 package Data;
 
 import lombok.val;
+import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
+
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -114,6 +117,9 @@ public class MySQLHelper {
             val cleaningOrder = runner.update(conn, cleanOrderSQL);
             val cleaningPayment = runner.update(conn, cleanPaymentSQL);
             val cleaningCredit = runner.update(conn, cleanCreditSQL);
+        } finally {
+            Connection conn = DriverManager.getConnection(url, user, password);
+            DbUtils.closeQuietly(conn);
         }
     }
 }
