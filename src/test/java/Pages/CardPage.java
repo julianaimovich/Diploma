@@ -6,20 +6,21 @@ import com.codeborne.selenide.SelenideElement;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.$;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class CardPage {
-    private SelenideElement cardNumberField = $(byXpath("//div[1]//span[2]/input"));
-    private SelenideElement cardMonthField = $(byXpath("//div[2]//span[1]//span[2]/input"));
-    private SelenideElement cardYearField = $(byXpath("//div[2]//span[2]//span[2]/input"));
-    private SelenideElement cardOwnerField = $(byXpath("//div[3]//span[1]//span[2]/input"));
-    private SelenideElement cardCVVField = $(byXpath("//div[3]//span[2]//span[2]/input"));
+    private SelenideElement cardNumberField = $(byText("Номер карты")).parent().$(".input__control");
+    private SelenideElement cardMonthField = $(byText("Месяц")).parent().$(".input__control");
+    private SelenideElement cardYearField = $(byText("Год")).parent().$(".input__control");
+    private SelenideElement cardOwnerField = $(byText("Владелец")).parent().$(".input__control");
+    private SelenideElement cardCVVField = $(byText("CVC/CVV")).parent().$(".input__control");
     private SelenideElement continueButton = $(byText("Продолжить"));
-    private SelenideElement errorCardMessage = $(byXpath("//div[1]//span[3]"));
-    private SelenideElement errorMonthMessage = $(byXpath("//div[2]//span[1]//span[3]"));
-    private SelenideElement errorYearMessage = $(byXpath("//div[2]//span[2]//span[3]"));
-    private SelenideElement errorOwnerMessage = $(byXpath("//div[3]//span[1]//span[3]"));
-    private SelenideElement errorCVVMessage = $(byXpath("//div[3]//span[2]//span[3]"));
+    private SelenideElement errorCardMessage = $(byText("Номер карты")).parent().$(".input__sub");
+    private SelenideElement errorMonthMessage = $(byText("Месяц")).parent().$(".input__sub");
+    private SelenideElement errorYearMessage = $(byText("Год")).parent().$(".input__sub");
+    private SelenideElement errorOwnerMessage = $(byText("Владелец")).parent().$(".input__sub");
+    private SelenideElement errorCVVMessage = $(byText("CVC/CVV")).parent().$(".input__sub");
     private SelenideElement errorExpiredCardMessage = $(byText("Истёк срок действия карты"));
 
     public void fillForm(CardInfo cardInfo) {
@@ -49,6 +50,10 @@ public class CardPage {
 
     public void shouldGetThreeDigits () {
         assertNotEquals(DataHelper.randomNumber, cardCVVField.getValue());
+    }
+
+    public void checkIfCardNumberAccepted () {
+        assertEquals(DataHelper.cardNumberMaestro, cardNumberField.getValue());
     }
 
     public void sendEmptyForm () {

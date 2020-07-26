@@ -1,19 +1,14 @@
+package Tests;
+
 import Data.DataHelper;
-import Data.SQLHelper;
 import Pages.MainPage;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
 import lombok.val;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import java.sql.SQLException;
+import org.junit.jupiter.api.*;
 import static com.codeborne.selenide.Selenide.open;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestClass {
+public class FormTest {
 
     @BeforeAll
     static void setUpAll() {
@@ -21,9 +16,8 @@ public class TestClass {
     }
 
     @AfterAll
-    static void tearDownAll() throws SQLException {
+    static void tearDownAll() {
         SelenideLogger.removeListener("allure");
-        SQLHelper.cleanDB();
     }
 
     @BeforeEach
@@ -32,78 +26,11 @@ public class TestClass {
     }
 
     @Test
-    @DisplayName("Payment card info can be sent and saved by database")
-    void paymentCardInfoCanBeSentAndSavedByDatabase () throws SQLException {
-        val mainPage = new MainPage();
-        val debitCard = mainPage.payWithDebitCard();
-        val cardInfo = DataHelper.cardInfoSample();
-        debitCard.fillForm(cardInfo);
-        mainPage.checkIfTransactionWasDeclined();
-        assertEquals(SQLHelper.getCreatedOrderStatus(), SQLHelper.getCreatedPaymentStatus());
-    }
-
-    @Test
-    @DisplayName("Credit card info can be sent and saved by database")
-    void creditCardInfoCanBeSentAndSavedByDatabase () throws SQLException {
-        val mainPage = new MainPage();
-        val creditCard = mainPage.sendCreditRequest();
-        val cardInfo = DataHelper.cardInfoSample();
-        creditCard.fillForm(cardInfo);
-        mainPage.checkIfTransactionWasDeclined();
-        assertEquals(SQLHelper.getCreatedOrderStatus(), SQLHelper.getCreatedRequestStatus());
-    }
-
-    @Test
-    @DisplayName("Payment with first given card should be approved and saved by database")
-    void paymentWithFirstGivenCardShouldBeApprovedAndSavedByDatabase () throws SQLException {
-        val mainPage = new MainPage();
-        val debitCard = mainPage.payWithDebitCard();
-        val cardInfo = DataHelper.firstGivenCard();
-        debitCard.fillForm(cardInfo);
-        mainPage.checkIfTransactionWasApproved();
-        assertEquals(DataHelper.approvedStatus, SQLHelper.getPaymentStatus());
-    }
-
-    @Test
-    @DisplayName("Payment with second given card should be declined and saved by database")
-    void paymentWithSecondGivenCardShouldBeDeclinedAndSavedByDatabase () throws SQLException {
-        val mainPage = new MainPage();
-        val debitCard = mainPage.payWithDebitCard();
-        val cardInfo = DataHelper.secondGivenCard();
-        debitCard.fillForm(cardInfo);
-        mainPage.checkIfTransactionWasDeclined();
-        assertEquals(DataHelper.declinedStatus, SQLHelper.getPaymentStatus());
-    }
-
-    @Test
-    @DisplayName("Credit request with first given card should be approved and saved by database")
-    void creditRequestWithFirstGivenCardShouldBeApprovedAndSavedByDatabase () throws SQLException {
-        val mainPage = new MainPage();
-        val creditCard = mainPage.sendCreditRequest();
-        val cardInfo = DataHelper.firstGivenCard();
-        creditCard.fillForm(cardInfo);
-        mainPage.checkIfTransactionWasApproved();
-        assertEquals(DataHelper.approvedStatus, SQLHelper.getRequestStatus());
-    }
-
-    @Test
-    @DisplayName("Credit request with second given card should be declined and saved by database")
-    void creditRequestWithSecondGivenCardShouldBeDeclinedAndSavedByDatabase () throws SQLException {
-        val mainPage = new MainPage();
-        val creditCard = mainPage.sendCreditRequest();
-        val cardInfo = DataHelper.secondGivenCard();
-        creditCard.fillForm(cardInfo);
-        mainPage.checkIfTransactionWasDeclined();
-        assertEquals(DataHelper.declinedStatus, SQLHelper.getRequestStatus());
-        mainPage.checkIfTransactionWasDeclined();
-    }
-
-    @Test
     @DisplayName("Should show error message if card filled with characters")
     void shouldShowErrorMessageIfCardFilledWithCharacters () {
         val mainPage = new MainPage();
         val debitCard = mainPage.payWithDebitCard();
-        val cardInfo = DataHelper.charactersInsteadOfCardNumber();
+        val cardInfo = DataHelper.getCharactersInsteadOfCardNumber();
         debitCard.fillForm(cardInfo);
         debitCard.cardNumberErrorCheck();
     }
@@ -113,7 +40,7 @@ public class TestClass {
     void shouldShowErrorMessageIfCardFilledWithShortNumber() {
         val mainPage = new MainPage();
         val debitCard = mainPage.payWithDebitCard();
-        val cardInfo = DataHelper.cardWithShortNumber();
+        val cardInfo = DataHelper.getCardWithShortNumber();
         debitCard.fillForm(cardInfo);
         debitCard.cardNumberErrorCheck();
     }
@@ -123,8 +50,9 @@ public class TestClass {
     void shouldAcceptLongCardNumber() {
         val mainPage = new MainPage();
         val debitCard = mainPage.payWithDebitCard();
-        val cardInfo = DataHelper.cardWithLongNumber();
+        val cardInfo = DataHelper.getCardWithLongNumber();
         debitCard.fillForm(cardInfo);
+        debitCard.checkIfCardNumberAccepted();
     }
 
     @Test
@@ -132,7 +60,7 @@ public class TestClass {
     void shouldShowErrorMessageIfCardFilledWithSymbols() {
         val mainPage = new MainPage();
         val debitCard = mainPage.payWithDebitCard();
-        val cardInfo = DataHelper.symbolsInsteadOfCardNumber();
+        val cardInfo = DataHelper.getSymbolsInsteadOfCardNumber();
         debitCard.fillForm(cardInfo);
         debitCard.cardNumberErrorCheck();
     }
@@ -142,7 +70,7 @@ public class TestClass {
     void shouldShowErrorMessageIfCardIsExpired() {
         val mainPage = new MainPage();
         val debitCard = mainPage.payWithDebitCard();
-        val cardInfo = DataHelper.expiredCardInfo();
+        val cardInfo = DataHelper.getExpiredCardInfo();
         debitCard.fillForm(cardInfo);
         debitCard.cardDateErrorCheck();
     }
@@ -152,7 +80,7 @@ public class TestClass {
     void shouldShowErrorMessageIfOwnerFilledOnlyWithFirstName() {
         val mainPage = new MainPage();
         val debitCard = mainPage.payWithDebitCard();
-        val cardInfo = DataHelper.onlyOwnerName();
+        val cardInfo = DataHelper.getOnlyOwnerName();
         debitCard.fillForm(cardInfo);
         debitCard.ownerErrorCheck();
     }
@@ -162,7 +90,7 @@ public class TestClass {
     void shouldShowErrorMessageIfOwnerFilledWithNameInRussian() {
         val mainPage = new MainPage();
         val debitCard = mainPage.payWithDebitCard();
-        val cardInfo = DataHelper.russianOwnerName();
+        val cardInfo = DataHelper.getRussianOwnerName();
         debitCard.fillForm(cardInfo);
         debitCard.ownerErrorCheck();
     }
@@ -172,7 +100,7 @@ public class TestClass {
     void shouldShowErrorMessageIfOwnerFilledWithNumber() {
         val mainPage = new MainPage();
         val debitCard = mainPage.payWithDebitCard();
-        val cardInfo = DataHelper.numberInsteadOfName();
+        val cardInfo = DataHelper.getNumberInsteadOfName();
         debitCard.fillForm(cardInfo);
         debitCard.ownerErrorCheck();
     }
@@ -182,7 +110,7 @@ public class TestClass {
     void shouldShowErrorMessageIfOwnerFilledWithSymbols() {
         val mainPage = new MainPage();
         val debitCard = mainPage.payWithDebitCard();
-        val cardInfo = DataHelper.symbolsInsteadOfName();
+        val cardInfo = DataHelper.getSymbolsInsteadOfName();
         debitCard.fillForm(cardInfo);
         debitCard.ownerErrorCheck();
     }
@@ -192,7 +120,7 @@ public class TestClass {
     void shouldShowErrorMessageIfOwnerFilledWithRandomCharacters() {
         val mainPage = new MainPage();
         val debitCard = mainPage.payWithDebitCard();
-        val cardInfo = DataHelper.randomCharactersInsteadOfName();
+        val cardInfo = DataHelper.getRandomCharactersInsteadOfName();
         debitCard.fillForm(cardInfo);
         debitCard.ownerErrorCheck();
     }
@@ -202,7 +130,7 @@ public class TestClass {
     void shouldShowErrorMessageIfCVVFilledWithSymbols() {
         val mainPage = new MainPage();
         val debitCard = mainPage.payWithDebitCard();
-        val cardInfo = DataHelper.symbolsInsteadOfCVV();
+        val cardInfo = DataHelper.getSymbolsInsteadOfCVV();
         debitCard.fillForm(cardInfo);
         debitCard.CVVErrorCheck();
     }
@@ -212,7 +140,7 @@ public class TestClass {
     void shouldShowErrorMessageIfCVVFilledWithCharacters() {
         val mainPage = new MainPage();
         val debitCard = mainPage.payWithDebitCard();
-        val cardInfo = DataHelper.charactersInsteadOfCVV();
+        val cardInfo = DataHelper.getCharactersInsteadOfCVV();
         debitCard.fillForm(cardInfo);
         debitCard.CVVErrorCheck();
     }
@@ -222,7 +150,7 @@ public class TestClass {
     void CVVFieldShouldNotAcceptMoreThanThreeDigits() {
         val mainPage = new MainPage();
         val debitCard = mainPage.payWithDebitCard();
-        val cardInfo = DataHelper.CVVLongerThanThree();
+        val cardInfo = DataHelper.getCVVLongerThanThree();
         debitCard.fillForm(cardInfo);
         debitCard.shouldGetThreeDigits();
     }
@@ -232,7 +160,7 @@ public class TestClass {
     void shouldShowErrorMessageIfCVVFilledWith2Digits() {
         val mainPage = new MainPage();
         val debitCard = mainPage.payWithDebitCard();
-        val cardInfo = DataHelper.CVVShorterThanThree();
+        val cardInfo = DataHelper.getCVVShorterThanThree();
         debitCard.fillForm(cardInfo);
         debitCard.CVVErrorCheck();
     }

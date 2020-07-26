@@ -62,71 +62,71 @@ public class DataHelper {
         private String cardCVV;
     }
 
-    public static CardInfo cardInfoSample () {
+    public static CardInfo getCardInfoSample () {
         return new CardInfo(getCardNumber(), monthCalculating(), String.valueOf(yearCalculating()+2), cardOwner, getCVV());
     }
 
-    public static CardInfo firstGivenCard () {
+    public static CardInfo getFirstGivenCard () {
         return new CardInfo(firstGivenCardNumber, monthCalculating(), String.valueOf(yearCalculating()+2), cardOwner, getCVV());
     }
 
-    public static CardInfo secondGivenCard () {
+    public static CardInfo getSecondGivenCard () {
         return new CardInfo(secondGivenCardNumber, monthCalculating(), String.valueOf(yearCalculating()+2), cardOwner, getCVV());
     }
 
-    public static CardInfo charactersInsteadOfCardNumber () {
+    public static CardInfo getCharactersInsteadOfCardNumber () {
         return new CardInfo(characters, monthCalculating(), String.valueOf(yearCalculating()+2), cardOwner, getCVV());
     }
 
-    public static CardInfo cardWithShortNumber () {
+    public static CardInfo getCardWithShortNumber () {
         return new CardInfo(getShortCardNumber(), monthCalculating(), String.valueOf(yearCalculating()+2), cardOwner, getCVV());
     }
 
-    public static CardInfo cardWithLongNumber () {
+    public static CardInfo getCardWithLongNumber () {
         return new CardInfo(cardNumberMaestro, monthCalculating(), String.valueOf(yearCalculating()+2), cardOwner, getCVV());
     }
 
-    public static CardInfo symbolsInsteadOfCardNumber () {
+    public static CardInfo getSymbolsInsteadOfCardNumber () {
         return new CardInfo(symbols, monthCalculating(), String.valueOf(yearCalculating()+2), cardOwner, getCVV());
     }
 
-    public static CardInfo expiredCardInfo () {
+    public static CardInfo getExpiredCardInfo () {
         return new CardInfo(getCardNumber(), monthCalculating(), String.valueOf(yearCalculating()-4), cardOwner, getCVV());
     }
 
-    public static CardInfo onlyOwnerName () {
+    public static CardInfo getOnlyOwnerName () {
         return new CardInfo(getCardNumber(), monthCalculating(), String.valueOf(yearCalculating()+2), cardOwnerName, getCVV());
     }
 
-    public static CardInfo russianOwnerName () {
+    public static CardInfo getRussianOwnerName () {
         return new CardInfo(getCardNumber(), monthCalculating(), String.valueOf(yearCalculating()+2), cardOwnerRussian, getCVV());
     }
 
-    public static CardInfo numberInsteadOfName () {
+    public static CardInfo getNumberInsteadOfName () {
         return new CardInfo(getCardNumber(), monthCalculating(), String.valueOf(yearCalculating()+2), randomNumber, getCVV());
     }
 
-    public static CardInfo symbolsInsteadOfName () {
+    public static CardInfo getSymbolsInsteadOfName () {
         return new CardInfo(getCardNumber(), monthCalculating(), String.valueOf(yearCalculating()+2), symbols, getCVV());
     }
 
-    public static CardInfo randomCharactersInsteadOfName () {
+    public static CardInfo getRandomCharactersInsteadOfName () {
         return new CardInfo(getCardNumber(), monthCalculating(), String.valueOf(yearCalculating()+2), characters, getCVV());
     }
 
-    public static CardInfo symbolsInsteadOfCVV () {
+    public static CardInfo getSymbolsInsteadOfCVV () {
         return new CardInfo(getCardNumber(), monthCalculating(), String.valueOf(yearCalculating()+2), cardOwner, symbols);
     }
 
-    public static CardInfo charactersInsteadOfCVV () {
+    public static CardInfo getCharactersInsteadOfCVV () {
         return new CardInfo(getCardNumber(), monthCalculating(), String.valueOf(yearCalculating()+2), cardOwner, characters);
     }
 
-    public static CardInfo CVVLongerThanThree () {
+    public static CardInfo getCVVLongerThanThree () {
         return new CardInfo(getCardNumber(), monthCalculating(), String.valueOf(yearCalculating()+2), cardOwner, randomNumber);
     }
 
-    public static CardInfo CVVShorterThanThree () {
+    public static CardInfo getCVVShorterThanThree () {
         return new CardInfo(getCardNumber(), monthCalculating(), String.valueOf(yearCalculating()+2), cardOwner, "13");
     }
 }
