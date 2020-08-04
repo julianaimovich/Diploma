@@ -21,33 +21,33 @@ public class DataHelper {
     public static String declinedStatus = "DECLINED";
     public static String approvedStatus = "APPROVED";
 
-    public static String getCardNumber () {
+    private static String getCardNumber () {
         String cardNum = faker.finance().creditCard(CreditCardType.MASTERCARD);
         String cardNumber = cardNum.replaceAll("-", "");
         return cardNumber;
     }
 
-    public static String monthCalculating() {
+    private static String monthCalculating() {
         LocalDate date = LocalDate.now();
         DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MM");
         String cardMonth = date.format(monthFormatter);
         return cardMonth;
     }
 
-    public static int yearCalculating() {
+    private static int yearCalculating() {
         LocalDate cardDate = LocalDate.now();
         DateTimeFormatter yearFormatter = DateTimeFormatter.ofPattern("yy");
         int cardYear = Integer.valueOf(cardDate.format(yearFormatter));
         return cardYear;
     }
 
-    public static String getCVV () {
+    private static String getCVV () {
         int code = 100 + (int) (Math.random() * 900);
         String CVV = String.valueOf(code);
         return CVV;
     }
 
-    public static String getShortCardNumber () {
+    private static String getShortCardNumber () {
         String shortCardNum = faker.finance().creditCard(CreditCardType.AMERICAN_EXPRESS);
         String shortCardNumber = shortCardNum.replaceAll("-", "");
         return shortCardNumber;
