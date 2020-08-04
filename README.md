@@ -1,3 +1,9 @@
+[План автоматизации](https://github.com/julianaimovich/Diploma/blob/master/docs/Plan.md)
+
+[Отчет по итогам тестирования](https://github.com/julianaimovich/Diploma/blob/master/docs/Report.md)
+
+[Отчет по итогам автоматизации](https://github.com/julianaimovich/Diploma/blob/master/docs/Summary.md)
+
 # Запуск авто-тестов
 
 ### ПО, необходимое для запуска авто-тестов:
